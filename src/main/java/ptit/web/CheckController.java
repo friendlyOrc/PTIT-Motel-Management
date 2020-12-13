@@ -42,7 +42,8 @@ public class CheckController {
     }
 
     @GetMapping
-    public String showManagementPage() {
+    public String showManagementPage(Model model) {
+        model.addAttribute("page", "Quản lý gửi xe");
         return "check.html";
     }
 
@@ -119,7 +120,6 @@ public class CheckController {
         } catch (Exception e) {
             return "redirect:/motorbike/findMotorbike";
         }
-        model.addAttribute("page", "Lấy xe");
         return "redirect:/check/findCheckOut";
     }
 

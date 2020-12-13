@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -299,7 +300,7 @@ public class ServiceController {
 	}
 
 	@PostMapping("/serviceStat")
-	public String postServiceStat(ServiceStat serviceStat, Model model) {
+	public String postServiceStat(HttpSession session, ServiceStat serviceStat, Model model) {
 
 		int m = serviceStat.getMonth();
 		ArrayList<ServiceStat> rs = new ArrayList<>();
@@ -322,9 +323,26 @@ public class ServiceController {
 			rs.add(temp);
 		}
 		model.addAttribute("page", "Thống kê dịch vụ");
-		model.addAttribute("ss", rs);
+		session.setAttribute("ss", rs);
 		model.addAttribute("ServiceStat", serviceStat);
 
 		return "serviceStat";
+	}
+
+	@GetMapping("/serviceStatDetail")
+	public String serviceStatDetail(HttpSession session, Model model, @RequestParam(name = "id") Long id) {
+
+		ArrayList<ServiceStat> ss = (ArrayList<ServiceStat>) session.getAttribute("ss");
+		ServiceStat serviceStat = new ServiceStat();
+		for (int i = 0; i < ss.size(); i++) {
+			if (id == ss.get(i).getService().getId()) {
+				serviceStat = ss.get(i);
+				break;
+			}
+		}
+		model.addAttribute("page", "Thống kê dịch vụ sử dụng");
+		model.addAttribute("ServiceStat", serviceStat);
+
+		return "studentUseStat";
 	}
 }

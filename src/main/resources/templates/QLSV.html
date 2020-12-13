@@ -7,7 +7,7 @@
 
 
   <div th:insert="navbar::navbar"> </div>
-  <div class="studentManagement">
+  <div class="studentManagement"  style="top: 0%">
     <div class="">
       <a th:href="@{/student/addStudent}" class="btn">Thêm sinh viên</a>
     </div>
@@ -16,6 +16,9 @@
     </div>
     <div>
       <a th:href="@{/student/bill}" class="btn">Hóa đơn tháng</a>
+    </div>
+    <div>
+      <a th:href="@{/student/stat}" class="btn">Thống kê dịch vụ</a>
     </div>
   </div>
 </body>

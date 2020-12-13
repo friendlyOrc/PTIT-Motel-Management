@@ -38,7 +38,8 @@ public class MonthLyTicketController {
     }
 
     @GetMapping
-    public String showManagementPage() {
+    public String showManagementPage(Model model) {
+        model.addAttribute("page", "Quản lý vé tháng");
         return "QLVX.html";
     }
 

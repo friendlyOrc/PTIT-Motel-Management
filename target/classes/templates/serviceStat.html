@@ -44,13 +44,15 @@
             <th>Tên dịch vụ</th>
             <th>Số lần sử dụng</th>
             <th>Tổng doanh thu</th>
+            <th>Chi tiết</th>
           </tr>
-          <div th:each="stuser: ${ss}">
+          <div th:each="stuser: ${session.ss}">
             <tr>
               <td th:text="${stuser.service.id}"></td>
               <td th:text="${stuser.service.name}"></td>
               <td th:text="${stuser.count}"></td>
               <td th:text="${stuser.total}"></td>
+              <td><a th:href="@{/service/serviceStatDetail(id=${stuser.service.id})}">Xem chi tiết</a></td>
             </tr>
           </div>
         </table>

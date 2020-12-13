@@ -44,7 +44,7 @@ div{
   padding: 30px 0;
 }
 .nav-container{
-  max-width: 90%;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 0px;
@@ -338,8 +338,8 @@ a{
   position: absolute;
   align-items: center;
   text-align: center;
-  transform: translate(-50%,50%);
-  top:10%;
+  transform: translate(-50%, 30%);
+  top:0%;
   left:50%;
 }
 

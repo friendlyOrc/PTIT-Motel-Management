@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
@@ -18,15 +19,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ptit.Bill;
 import ptit.MonthlyTicket;
 import ptit.Room;
+import ptit.Service;
+import ptit.ServiceStat;
 import ptit.Student;
 import ptit.StudentService;
+import ptit.StudentStat;
 import ptit.data.MonthlyTicketRepository;
 import ptit.data.MotorbikeRepository;
 import ptit.data.RoomRepository;
+import ptit.data.ServiceRepository;
 import ptit.data.StudentRepository;
 import ptit.data.StudentServiceRepository;
 
@@ -38,14 +44,16 @@ public class StudentController {
     private final MonthlyTicketRepository ticketRepo;
     private final MotorbikeRepository motoRepo;
     private final StudentServiceRepository stsvRepo;
+    private final ServiceRepository serviceRepo;
 
     public StudentController(StudentRepository stuRepo, RoomRepository roomRepo, MonthlyTicketRepository ticketRepo,
-            MotorbikeRepository motoRepo, StudentServiceRepository stsvRepo) {
+            MotorbikeRepository motoRepo, StudentServiceRepository stsvRepo, ServiceRepository serviceRepo) {
         this.stuRepo = stuRepo;
         this.roomRepo = roomRepo;
         this.ticketRepo = ticketRepo;
         this.motoRepo = motoRepo;
         this.stsvRepo = stsvRepo;
+        this.serviceRepo = serviceRepo;
     }
 
     @GetMapping
@@ -178,5 +186,68 @@ public class StudentController {
         bill.setTotal(total);
         model.addAttribute("bill", bill);
         return "bill";
+    }
+
+    @GetMapping("/stat")
+    public String stat(HttpSession session, Model model) {
+        model.addAttribute("page", "Thống kê dịch vụ đã sử dụng");
+        model.addAttribute("studentStat", new StudentStat());
+        session.removeAttribute("studentStat");
+
+        ArrayList<Student> students = (ArrayList<Student>) stuRepo.findAll();
+        model.addAttribute("students", students);
+        model.addAttribute("hidden", "hidden");
+
+        return "studentStat";
+    }
+
+    @PostMapping("/stat")
+    public String postStat(HttpSession session, StudentStat studentStat, Model model) {
+        model.addAttribute("page", "Thống kê dịch vụ đã sử dụng của sinh viên");
+        model.addAttribute("hidden", null);
+
+        ArrayList<ServiceStat> rs = new ArrayList<>();
+        ArrayList<Service> services = (ArrayList<Service>) serviceRepo.findAll();
+
+        for (Service sv : services) {
+            ServiceStat temp = new ServiceStat();
+            temp.setService(sv);
+            temp.setMonth(0);
+            ArrayList<StudentService> ss = stsvRepo.stuStat(sv.getId(), studentStat.getStudent().getId());
+            temp.setSs(ss);
+            Float total = (float) 0;
+            int count = 0;
+            for (StudentService tempss : ss) {
+                total += tempss.getQuantity() * tempss.getService().getPrice();
+                count += tempss.getQuantity();
+            }
+            temp.setTotal(total);
+            temp.setCount(count);
+            rs.add(temp);
+        }
+        studentStat.setSs(rs);
+
+        ArrayList<Student> students = (ArrayList<Student>) stuRepo.findAll();
+        model.addAttribute("students", students);
+        session.setAttribute("studentStat", studentStat);
+        return "studentStat";
+    }
+
+    @GetMapping("/statDetail")
+    public String statDetail(HttpSession session, Model model, @RequestParam(name = "id") Long id) {
+
+        StudentStat ss = (StudentStat) session.getAttribute("studentStat");
+
+        ServiceStat serviceStat = new ServiceStat();
+        for (int i = 0; i < ss.getSs().size(); i++) {
+            if (id == ss.getSs().get(i).getService().getId()) {
+                serviceStat = ss.getSs().get(i);
+                break;
+            }
+        }
+        model.addAttribute("page", "Thống kê dịch vụ sử dụng");
+        model.addAttribute("ServiceStat", serviceStat);
+
+        return "studentStatDetail";
     }
 }

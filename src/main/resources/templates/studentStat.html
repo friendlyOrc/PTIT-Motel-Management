@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<div th:insert="head::head"> </div>
+
+<body>
+
+  <div th:insert="navbar::navbar"> </div>
+
+  <div class="container stuFo">
+    <form class=" inputStudentName" th:object=${studentStat} method="post">
+      <h1 class="addSV">Hóa đơn sinh viên</h1>
+      <table>
+        <tr>
+          <td colspan="2">
+            <p th:text="${msg}"></p>
+          </td>
+        </tr>
+        <tr>
+          <td>Chọn sinh viên</td>
+
+          <td>
+            <select name="student" id="" required th:field="*{student}">
+              <option th:each="student: ${students}" th:value="${student.id}" th:text="${student.studentName}"></option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <input type="submit" name="findService" value="Xem thống kê">
+    </form>
+
+
+    <div th:hidden="${hidden}">
+      
+      <p>Sinh viên: <span th:text="${session?.studentStat?.student?.studentName}"></span></p>
+      <p>Mã Sinh viên: <span th:text="${session?.studentStat?.student?.studentID}"></span></p>
+      <p>CMT: <span th:text="${session?.studentStat?.student?.idCard}"></span></p>
+      <p>DoB: <span th:text="${session?.studentStat?.student?.DOB}"></span></p>
+      <p>Lớp: <span th:text="${session?.studentStat?.student?.classroom}"></span></p>
+      <p>Địa chỉ: <span th:text="${session?.studentStat?.student?.studentAddress}"></span></p>
+      <table id="stuFound" th:hidden="${hidden}">
+        <tr>
+          <th>ID</th>
+          <th>Tên dịch vụ</th>
+          <th>Số lần sử dụng</th>
+          <th>Tổng doanh thu</th>
+          <th>Chi tiết</th>
+        </tr>
+        <div th:each="stuser: ${session?.studentStat?.ss}">
+          <tr>
+            <td th:text="${stuser.service.id}"></td>
+            <td th:text="${stuser.service.name}"></td>
+            <td th:text="${stuser.count}"></td>
+            <td th:text="${stuser.total}"></td>
+            <td><a th:href="@{/student/statDetail(id=${stuser.service.id})}">Xem chi tiết</a></td>
+          </tr>
+        </div>
+      </table>
+    </div>
+
+  </div>
+</body>
+
+</html>
