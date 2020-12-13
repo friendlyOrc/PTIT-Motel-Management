@@ -1,6 +1,8 @@
 package ptit.web;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 import ptit.Service;
+import ptit.ServiceStat;
 import ptit.Student;
 import ptit.StudentService;
 import ptit.data.ServiceRepository;
@@ -139,7 +142,7 @@ public class ServiceController {
 			}
 			model.addAttribute("students", students);
 			model.addAttribute("search", new Student());
-			return "redirect:/service/studentuseservice?error";
+			return "redirect:/service/studentuseservice?id=" + iddv + "?error";
 		}
 		ArrayList<StudentService> stsv = (ArrayList<StudentService>) stsvRepo.findByService_Id(iddv);
 		ArrayList<Student> students = new ArrayList<>();
@@ -168,7 +171,13 @@ public class ServiceController {
 	}
 
 	@PostMapping("/serviceFound2")
-	public String processSearch2(Service service, Model model) {
+	public String processSearch2(ServletRequest request, Service service, Model model) {
+		Map<String, String[]> paramMap = request.getParameterMap();
+		if (paramMap.containsKey("add")) {
+			model.addAttribute("msg", "Thêm sinh viên sử dụng thành công!");
+		} else if (paramMap.containsKey("error")) {
+			model.addAttribute("msg", "Có lỗi xảy ra!");
+		}
 		List<Service> allServices = (List<Service>) serviceRepo.findAll();
 		List<Service> services = new ArrayList<>();
 		for (Service r : allServices) {
@@ -223,8 +232,13 @@ public class ServiceController {
 	}
 
 	@GetMapping("/studentuseservice")
-	public String studentuseservice(Model model, @RequestParam(name = "id") Long id) {
-
+	public String studentuseservice(ServletRequest request, Model model, @RequestParam(name = "id") Long id) {
+		Map<String, String[]> paramMap = request.getParameterMap();
+		if (paramMap.containsKey("add")) {
+			model.addAttribute("msg", "Thêm sinh viên sử dụng thành công!");
+		} else if (paramMap.containsKey("error")) {
+			model.addAttribute("msg", "Có lỗi xảy ra!");
+		}
 		model.addAttribute("page", "Sử dụng dịch vụ");
 		Service service = serviceRepo.findById(id).get();
 		ArrayList<StudentService> stsv = (ArrayList<StudentService>) stsvRepo.findByService_Id(id);
@@ -238,4 +252,79 @@ public class ServiceController {
 		return "studentUseService";
 	}
 
+	@GetMapping("/addServiceUsed")
+	public String addServiceUsed(ServletRequest request, Model model) {
+
+		Map<String, String[]> paramMap = request.getParameterMap();
+		if (paramMap.containsKey("error")) {
+			model.addAttribute("msg", "Có lỗi xảy ra!");
+		}
+		model.addAttribute("page", "Thêm sinh viên sử dụng");
+		ArrayList<Student> studetns = (ArrayList<Student>) studentRepo.findAll();
+		ArrayList<Service> services = (ArrayList<Service>) serviceRepo.findAll();
+		model.addAttribute("services", services);
+		model.addAttribute("students", studetns);
+		model.addAttribute("ss", new StudentService());
+
+		return "addServiceUsed";
+	}
+
+	@PostMapping("/addServiceUsed")
+	public String postAddServiceUsed(StudentService ss) {
+		System.out.print(ss.getService().getName() + ss.getStudent().getStudentName() + "\n");
+		try {
+
+			Calendar calendar = Calendar.getInstance();
+			Date date = new Date(calendar.getTime().getTime());
+			ss.setDate(date);
+			stsvRepo.save(ss);
+		} catch (Exception e) {
+			return "redirect:/service/addServiceUsed?error";
+		}
+		return "redirect:/service/serviceFound2?add";
+	}
+
+	@GetMapping("/serviceStat")
+	public String serviceStat(ServletRequest request, Model model) {
+
+		Map<String, String[]> paramMap = request.getParameterMap();
+		if (paramMap.containsKey("error")) {
+			model.addAttribute("msg", "Có lỗi xảy ra!");
+		}
+		model.addAttribute("page", "Thống kê dịch vụ");
+		model.addAttribute("ss", new ArrayList<StudentService>());
+		model.addAttribute("ServiceStat", new ServiceStat());
+
+		return "serviceStat";
+	}
+
+	@PostMapping("/serviceStat")
+	public String postServiceStat(ServiceStat serviceStat, Model model) {
+
+		int m = serviceStat.getMonth();
+		ArrayList<ServiceStat> rs = new ArrayList<>();
+		ArrayList<Service> services = (ArrayList<Service>) serviceRepo.findAll();
+
+		for (Service sv : services) {
+			ServiceStat temp = new ServiceStat();
+			temp.setService(sv);
+			temp.setMonth(m);
+			ArrayList<StudentService> ss = stsvRepo.stat(sv.getId(), m);
+			temp.setSs(ss);
+			Float total = (float) 0;
+			int count = 0;
+			for (StudentService tempss : ss) {
+				total += tempss.getQuantity() * tempss.getService().getPrice();
+				count += tempss.getQuantity();
+			}
+			temp.setTotal(total);
+			temp.setCount(count);
+			rs.add(temp);
+		}
+		model.addAttribute("page", "Thống kê dịch vụ");
+		model.addAttribute("ss", rs);
+		model.addAttribute("ServiceStat", serviceStat);
+
+		return "serviceStat";
+	}
 }

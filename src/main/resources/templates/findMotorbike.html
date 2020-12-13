@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<div th:insert="/head::head"> </div>
+  
+  <div th:insert="/head::head">  </div>
+  <body>
 
-<body>
+    
+  <div th:insert="/navbar::navbar">  </div>
 
+    <div class="container stuFo">
+      <form class=" inputStudentName" th:action="@{/motorbike/findMotorbike}" method="post">
+        <h1 class = "addSV">Tìm xe</h1>
+        <table>
+          <tr>
+            <td><p th:text="${msg}"></p></td>
+          </tr>
+          <tr>
+            <td><p>Nhập loại xe: </p></td>
+            <td><input type="text" name="loaixe" th:value="${motorbike.motorbikeName}" placeholder="Nhập loại xe"></td>
+          </tr>
+        </table>
+        <input type="submit" name="findService" value="Tìm">
+      </form>
 
-  <div th:insert="/navbar::navbar"> </div>
-
-  <div class="container stuFo">
-    <form class=" inputStudentName" th:action="@{/motorbike/findMotorbike}" method="post">
-      <h1 class="addSV">Tìm xe</h1>
-      <table>
-        <tr>
-          <td>
-            <p>Nhập loại xe: </p>
-          </td>
-          <td><input type="text" name="loaixe" th:value="${motorbike.motorbikeName}" placeholder="Nhập loại xe"></td>
-        </tr>
-      </table>
-      <input type="submit" name="findService" value="Tìm">
-    </form>
-
-    <form class="stuFoundForm" action="" method="post">
-      <table id="stuFound">
-        <tr>
-          <th>ID</th>
-          <th>Loại xe</th>
-          <th>Giá trị</th>
-          <th>Biển số</th>
-          <th>Chủ sở hữu</th>
-          <th>Sửa</th>
-          <th>Xóa</th>
-          <th>CheckIn</th>
-        </tr>
-        <tr th:each="motorbike: ${motorbikes}">
-          <td th:field="${motorbike.id}" th:text="${motorbike.id}"></td>
-          <td th:field="${motorbike.motorbikeName}" th:text="${motorbike.motorbikeName}"></td>
-          <td th:field="${motorbike.price}" th:text="${motorbike.price}"></td>
-          <td th:field="${motorbike.licensePlates}" th:text="${motorbike.licensePlates}"></td>
-          <td th:field="${motorbike.student.id}" th:text="${motorbike.student.studentName}"></td>
-          <td><a th:href="@{/motorbike/editMotorbike(id=${motorbike.id})}">Sửa</a></td>
-          <td><a
-              th:href="@{/motorbike/deleteMotorbike(id=${motorbike.id}, motorbikeName=${motorbike.motorbikeName}, price=${motorbike.price}, licensePlates=${motorbike.licensePlates})}">Xóa</a>
-          </td>
-          <td><a th:href="@{/check/checkIn(id=${motorbike.id})}">CheckIn</a></td>
-        </tr>
-      </table>
-    </form>
-  </div>
-</body>
-
+      <form class="stuFoundForm" action="" method="post">
+        <table id="stuFound">
+          <tr>
+            <th>ID</th>
+            <th>Loại xe</th>
+            <th>Giá trị</th>
+            <th>Biển số</th>
+            <th>Chủ sở hữu</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+            <th>CheckIn</th>
+          </tr>
+          <tr th:each="motorbike: ${motorbikes}">
+            <td th:field="${motorbike.id}" th:text="${motorbike.id}"></td>
+            <td th:field="${motorbike.motorbikeName}" th:text="${motorbike.motorbikeName}"></td>
+            <td th:field="${motorbike.price}" th:text="${motorbike.price}"></td>
+            <td th:field="${motorbike.licensePlates}" th:text="${motorbike.licensePlates}"></td>
+            <td th:field="${motorbike.student.id}" th:text="${motorbike.student.studentName}"></td>
+            <td><a th:href="@{/motorbike/editMotorbike(id=${motorbike.id})}">Sửa</a></td>
+            <td><a th:href="@{/motorbike/deleteMotorbike(id=${motorbike.id}, motorbikeName=${motorbike.motorbikeName}, price=${motorbike.price}, licensePlates=${motorbike.licensePlates})}">Xóa</a></td>
+            <td><a th:href="@{/check/checkIn(id=${motorbike.id})}">CheckIn</a></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </body>
 </html>

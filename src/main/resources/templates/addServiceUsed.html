@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container">
+      <form class="loginForm" method="post">
+        <h1 class="addSV">Thêm sinh viên sử dụng</h1>
+        <table th:object="${ss}">
+          <tr>
+            <td colspan="2">
+              <p th:text="${msg}"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Tên dịch vụ </p></td>
+            <td>
+              <select name="service" id="" required>
+                <option th:each="service: ${services}" th:value="${service.id}" th:text="${service.name}"></option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Sinh viên</p></td>
+            <td>
+              <select name="student" id="" required>
+                <option th:each="student: ${students}" th:value="${student.id}" th:text="${student.studentName}"></option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Số lượng</p></td>
+            <td><input type="number" name="quantity" id="" placeholder="Nhập số lượng" required>
+            </td>
+          </tr>
+        </table>
+        <input type="submit" name="addService" value="Thêm">
+        <input type="reset" name="reset" value="Xóa tất cả">
+        <a href="/service"><input type="button" name="goBack" value="Quay lại"></a>
+      </form>
+    </div>
+
+  </body>
+</html>

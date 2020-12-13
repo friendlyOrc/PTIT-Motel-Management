@@ -7,7 +7,7 @@
 
     <div class="container stuFo">
       <form class=" inputStudentName" th:object=${search} method="post">
-        <h1 class = "addSV">Tìm dịch vụ</h1>
+        <h1 class = "addSV">Dịch vụ sinh viên đã sử dụng</h1>
         <table>
           <tr>
             <td colspan="2">
@@ -21,6 +21,8 @@
         </table>
         <input type="submit" name="findService" value="Tìm">
       </form>
+
+      <a th:href="@{/service/addServiceUsed}" th:hidden="${hidden2}" class="service__btn">Thêm sinh viên sử dụng</a>
 
       <form class="stuFoundForm" action="index.html" method="post">
         <table id="stuFound">

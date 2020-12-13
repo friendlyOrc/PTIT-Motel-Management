@@ -211,7 +211,7 @@ a{
 .container{
   text-align: center;
   font-size: 1.2rem;
-  line-height: 0.5rem;
+  line-height: 1;
   /* padding-top:100px; */
   /* padding-left:800px; */
   background: #f3eac2;
@@ -339,9 +339,8 @@ a{
   align-items: center;
   text-align: center;
   transform: translate(-50%,50%);
-  top:50%;
+  top:10%;
   left:50%;
-  padding-top:100px;
 }
 
 .btn{
@@ -374,3 +373,22 @@ a{
   border: 1px solid;
   border-radius: 20px;
 } */
+
+.service__btn{
+  margin-bottom: 2vw;
+  display: inline-block;
+  border:none;
+  outline:none;
+  height: 40px;
+  background: #ec5858;
+  color: #fff;
+  border-radius: 20px;
+  text-transform: uppercase;
+  cursor:pointer;
+  transition: transform 0.25s;
+  width: 40%;
+  line-height: 2;
+}
+.service__btn:hover{
+  transform: translateY(-5px);
+}

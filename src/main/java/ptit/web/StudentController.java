@@ -140,4 +140,9 @@ public class StudentController {
         }
         return "redirect:/student/studentFound";
     }
+
+    @GetMapping("/bill")
+    public String bill(ServletRequest request, Model model) {
+
+    }
 }

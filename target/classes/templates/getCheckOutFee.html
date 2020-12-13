@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    
+  <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container">
+        <form class="loginForm" th:action="@{/ticket/addMonthlyTicket}" method="post">
+            <h1 class="addSV">Thêm vé xe</h1>
+            <table>
+                <tr>
+                    <td>
+                        <p> Số lần đã checkIn/Out: </p>
+                    </td>
+                    <td>
+                        <p th:text="${count}"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p> Tiền thu: </p>
+                    </td>
+                    <td>
+                        <p th:text="${fee}"></p>
+                    </td>
+                </tr>
+            </table>
+            <a th:href="@{/check/findCheckOut}"><input type="button" name="goBack" value="Quay lại"></a>
+        </form>
+    </div>
+
+</body>
+
+</html>

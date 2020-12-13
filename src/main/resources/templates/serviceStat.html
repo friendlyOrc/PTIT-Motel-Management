@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container stuFo">
+      <form class=" inputStudentName" th:object=${ServiceStat} method="post">
+        <h1 class = "addSV">Dịch vụ sinh viên đã sử dụng</h1>
+        <table>
+          <tr>
+            <td colspan="2">
+              <p th:text="${msg}"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Chọn tháng: </p></td>
+            <td>
+              <select name="" th:field="*{month}" id="">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <input type="submit" name="findService" value="Thống kê">
+      </form>
+
+      <form class="stuFoundForm" action="index.html" method="post">
+        <table id="stuFound">
+          <tr>
+            <th>ID</th>
+            <th>Tên dịch vụ</th>
+            <th>Số lần sử dụng</th>
+            <th>Tổng doanh thu</th>
+          </tr>
+          <div th:each="stuser: ${ss}">
+            <tr>
+              <td th:text="${stuser.service.id}"></td>
+              <td th:text="${stuser.service.name}"></td>
+              <td th:text="${stuser.count}"></td>
+              <td th:text="${stuser.total}"></td>
+            </tr>
+          </div>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>
