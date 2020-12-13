@@ -1,3 +1,13 @@
+-- drop table tblMonthlyTicket;
+-- drop table tblcheckout;
+-- drop table tblcheckin;
+-- drop table tblMotorBike;
+-- drop table tblGuest;
+-- drop table tblStudentService;
+-- drop table tblStudent;
+-- drop table tblRoom;
+-- drop table tblService;
+
 
 create table if not exists tblRoom(
 	id int primary key auto_increment,
