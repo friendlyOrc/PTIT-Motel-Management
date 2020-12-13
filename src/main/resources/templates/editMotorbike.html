@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <div th:insert="/head::head"> </div>
+  <div th:insert="head::head"> </div>
   <body>
 
     
-  <div th:insert="/navbar::navbar"> </div>
+  <div th:insert="navbar::navbar"> </div>
 
     <div class="container">
       <form class="loginForm" th:action="@{/motorbike/editMotorbike}" method="post" >

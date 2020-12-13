@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   
-  <div th:insert="/head::head">  </div>
+  <div th:insert="head::head">  </div>
   <body>
 
     
-  <div th:insert="/navbar::navbar">  </div>
+  <div th:insert="navbar::navbar">  </div>
 
     <div class="container stuFo">
       <form class=" inputStudentName" th:action="@{/check/findCheckOut}" method="post">
@@ -35,7 +35,6 @@
             <td th:field="${checkedIn.id}" th:text="${checkedIn.id}"></td>
             <td th:field="${checkedIn.motorbike.licensePlates}" th:text="${checkedIn.motorbike.licensePlates}"></td>
             <td th:field="${checkedIn.time}" th:text="${checkedIn.time}"></td>
-            <!-- <td th:field="${checkedIn.fee}" th:text="${checkedIn.fee}"></td> -->
             <td><a th:href="@{/check/checkOut(id=${checkedIn.id})}">CheckOut</a></td>
           </tr>
         </table>
