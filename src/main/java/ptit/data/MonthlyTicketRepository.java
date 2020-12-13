@@ -1,5 +1,7 @@
 package ptit.data;
 
+import java.util.ArrayList;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,12 +12,16 @@ import org.springframework.stereotype.Repository;
 
 import ptit.MonthlyTicket;
 import ptit.Motorbike;
+
 @Repository
-public interface MonthlyTicketRepository extends CrudRepository<MonthlyTicket,Integer>{
+public interface MonthlyTicketRepository extends CrudRepository<MonthlyTicket, Integer> {
     public MonthlyTicket findBymotorbike(Motorbike motorbike);
 
     @Transactional
     @Modifying
-    @Query(value="DELETE FROM tblmonthlyticket WHERE tblmonthlyticket.studentid = ?1",nativeQuery=true)
+    @Query(value = "DELETE FROM tblmonthlyticket WHERE tblmonthlyticket.studentid = ?1", nativeQuery = true)
     void deleteByStudentId(int sinhvienid);
+
+    @Query(value = "SELECT * FROM tblmonthlyticket WHERE studentid = ?1", nativeQuery = true)
+    ArrayList<MonthlyTicket> findByStudent(int id);
 }

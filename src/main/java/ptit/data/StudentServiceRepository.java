@@ -17,4 +17,7 @@ public interface StudentServiceRepository extends CrudRepository<StudentService,
 
     @Query(value = "SELECT * FROM tblStudentService WHERE serviceid = ?1 AND MONTH(`date`) = ?2", nativeQuery = true)
     ArrayList<StudentService> stat(Long id, int month);
+
+    @Query(value = "SELECT * FROM tblStudentService WHERE studentid = ?1 AND MONTH(`date`) = ?2", nativeQuery = true)
+    ArrayList<StudentService> bill(int i, int month);
 }

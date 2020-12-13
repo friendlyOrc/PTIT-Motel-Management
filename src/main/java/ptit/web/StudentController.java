@@ -12,19 +12,23 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ptit.Bill;
 import ptit.MonthlyTicket;
 import ptit.Room;
 import ptit.Student;
+import ptit.StudentService;
 import ptit.data.MonthlyTicketRepository;
 import ptit.data.MotorbikeRepository;
 import ptit.data.RoomRepository;
 import ptit.data.StudentRepository;
+import ptit.data.StudentServiceRepository;
 
 @Controller
 @RequestMapping("/student")
@@ -33,17 +37,20 @@ public class StudentController {
     private final RoomRepository roomRepo;
     private final MonthlyTicketRepository ticketRepo;
     private final MotorbikeRepository motoRepo;
+    private final StudentServiceRepository stsvRepo;
 
     public StudentController(StudentRepository stuRepo, RoomRepository roomRepo, MonthlyTicketRepository ticketRepo,
-            MotorbikeRepository motoRepo) {
+            MotorbikeRepository motoRepo, StudentServiceRepository stsvRepo) {
         this.stuRepo = stuRepo;
         this.roomRepo = roomRepo;
         this.ticketRepo = ticketRepo;
         this.motoRepo = motoRepo;
+        this.stsvRepo = stsvRepo;
     }
 
     @GetMapping
-    public String openQLSV() {
+    public String openQLSV(Model model) {
+        model.addAttribute("page", "Quản lý sinh viên");
         return "QLSV.html";
     }
 
@@ -141,8 +148,35 @@ public class StudentController {
         return "redirect:/student/studentFound";
     }
 
-    // @GetMapping("/bill")
-    // public String bill(ServletRequest request, Model model) {
+    @GetMapping("/bill")
+    public String bill(ServletRequest request, Model model) {
+        model.addAttribute("page", "Hóa đơn hàng tháng");
+        model.addAttribute("bill", new Bill());
 
-    // }
+        ArrayList<Student> students = (ArrayList<Student>) stuRepo.findAll();
+        model.addAttribute("students", students);
+        model.addAttribute("hidden", "hidden");
+        return "bill";
+    }
+
+    @PostMapping("/bill")
+    public String postBill(Bill bill, Model model) {
+        model.addAttribute("page", "Hóa đơn hàng tháng");
+
+        ArrayList<Student> students = (ArrayList<Student>) stuRepo.findAll();
+        model.addAttribute("students", students);
+        ArrayList<StudentService> ss = stsvRepo.bill(bill.getStudent().getId(), bill.getMonth());
+        ArrayList<MonthlyTicket> mt = ticketRepo.findByStudent(bill.getStudent().getId());
+        Float total = (float) 0;
+        for (StudentService tempss : ss) {
+            total += tempss.getQuantity() * tempss.getService().getPrice();
+        }
+        total += mt.size() * 100000;
+        total += bill.getStudent().getRoom().getPrice();
+        bill.setSs(ss);
+        bill.setMt(mt);
+        bill.setTotal(total);
+        model.addAttribute("bill", bill);
+        return "bill";
+    }
 }

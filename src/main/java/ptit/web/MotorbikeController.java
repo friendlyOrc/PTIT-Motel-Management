@@ -32,7 +32,8 @@ public class MotorbikeController {
     }
 
     @GetMapping
-    public String showManagerPage() {
+    public String showManagerPage(Model model) {
+        model.addAttribute("page", "Quản lý xe");
         return "QLXE.html";
     }
 
@@ -42,6 +43,7 @@ public class MotorbikeController {
         List<Student> listStudent = (List<Student>) stuRepo.findAll();
         model.addAttribute("students", listStudent);
         model.addAttribute("student", new Student());
+        model.addAttribute("page", "Thêm xe");
         return "addMotorbike";
     }
 
@@ -66,7 +68,7 @@ public class MotorbikeController {
         session.removeAttribute("msg");
         try {
             // DecimalFormat formatter = new DecimalFormat("###,###,###");
-            
+
             List<Motorbike> listMoto = (List<Motorbike>) motoRepo.findAll();
             for (Motorbike moto : listMoto) {
                 Student stu = stuRepo.findById(moto.getStudent().getId()).get();
@@ -79,7 +81,8 @@ public class MotorbikeController {
         }
         System.out.println(msg);
         model.addAttribute("msg", msg);
-        
+        model.addAttribute("page", "Tìm xe");
+
         return "findMotorbike";
     }
 
@@ -112,6 +115,7 @@ public class MotorbikeController {
         List<Student> listAllStudent = (List<Student>) stuRepo.findAll();
         model.addAttribute("student", new Student());
         model.addAttribute("students", listAllStudent);
+        model.addAttribute("page", "Sửa xe");
         return "editMotorbike";
     }
 

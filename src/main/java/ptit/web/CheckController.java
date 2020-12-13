@@ -42,7 +42,7 @@ public class CheckController {
     }
 
     @GetMapping
-    public String showManagementPage(){
+    public String showManagementPage() {
         return "check.html";
     }
 
@@ -119,6 +119,7 @@ public class CheckController {
         } catch (Exception e) {
             return "redirect:/motorbike/findMotorbike";
         }
+        model.addAttribute("page", "Lấy xe");
         return "redirect:/check/findCheckOut";
     }
 
@@ -132,30 +133,30 @@ public class CheckController {
         List<CheckIn> listCheckInCanCheckOut = canCheckOut(listCheckedIn);
         model.addAttribute("listCheckedIn", listCheckInCanCheckOut);
         model.addAttribute("checkedIn", new CheckIn());
+        model.addAttribute("page", "Lấy xe");
         // return "redirect:/motorbike/findMotorbike";
         return "findCheckOut";
     }
 
     @PostMapping("/findCheckOut")
-    public String findCheckedOutMotorbike(ServletRequest request, Model model, String licensePlates){
-        try{
+    public String findCheckedOutMotorbike(ServletRequest request, Model model, String licensePlates) {
+        try {
             List<CheckIn> listCheckedIn = (List<CheckIn>) checkinRepo.findAll();
             List<CheckIn> listCheckInContainsLP = new ArrayList<CheckIn>();
-            for(CheckIn checkIn :listCheckedIn){
+            for (CheckIn checkIn : listCheckedIn) {
                 Motorbike moto = motoRepo.findById(checkIn.getMotorbike().getId()).get();
                 checkIn.setMotorbike(moto);
-                if(moto.getLicensePlates().contains(licensePlates)){
+                if (moto.getLicensePlates().contains(licensePlates)) {
                     listCheckInContainsLP.add(checkIn);
                 }
-                
+
             }
             System.out.println(listCheckInContainsLP.size());
 
             List<CheckIn> listCheckInCanCheckOut = canCheckOut(listCheckInContainsLP);
             model.addAttribute("listCheckedIn", listCheckInCanCheckOut);
             model.addAttribute("checkedIn", new CheckIn());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return "redirect:/check/findCheckOut?error";
         }
         return "findCheckOut";
@@ -192,6 +193,7 @@ public class CheckController {
         System.out.println(checkInCount);
         model.addAttribute("fee", fee);
         model.addAttribute("count", checkInCount);
+        model.addAttribute("page", "Thanh toán tiền gửi xe");
         return "getCheckOutFee";
     }
 }

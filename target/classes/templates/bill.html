@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container stuFo">
+      <form class=" inputStudentName" th:object=${bill} method="post">
+        <h1 class = "addSV">Hóa đơn sinh viên</h1>
+        <table>
+          <tr>
+            <td colspan="2">
+              <p th:text="${msg}"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Chọn tháng: </p></td>
+            <td>
+              <select name="" th:field="*{month}" id="">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Chọn sinh viên</td>
+            
+            <td>
+              <select name="student" id="" required th:field="*{student}">
+                <option th:each="student: ${students}" th:value="${student.id}" th:text="${student.studentName}"></option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <input type="submit" name="findService" value="Xem hóa đơn tháng">
+      </form>
+
+      <div>
+        <table id="stuFound" th:hidden="${hidden}">
+          <tr>
+            <td>Hóa đơn tháng:</td>
+            <td th:text="${bill?.month}"></td>
+          </tr>
+
+          <tr>
+            <td>Sinh viên: </td>
+            <td th:text="${bill?.student?.studentName}"></td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <table style="width: 100%;">
+                <tr>
+                  <th>ID</th>
+                  <th>Tên dịch vụ</th>
+                  <th>Số lượng</th>
+                  <th>Đơn giá</th>
+                </tr>
+                <div th:each="sv: ${bill.ss}">
+                  <tr>
+                    <td th:text="${sv.service.id}"></td>
+                    <td th:text="${sv.service.name}"></td>
+                    <td th:text="${sv.quantity}"></td>
+                    <td th:text="${sv.service.price}"></td>
+                  </tr>
+                </div>
+              </table>
+            </td>
+          </tr>
+
+          
+          <tr>
+            <td colspan="2">
+              <table style="width: 100%;">
+                <tr>
+                  <th>ID Vé tháng</th>
+                  <th>Tên xe</th>
+                </tr>
+                <div th:each="m: ${bill.mt}">
+                  <tr>
+                    <td th:text="${m.id}"></td>
+                    <td th:text="${m.motorbike.motorbikeName}"></td>
+                  </tr>
+                </div>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Tiền phòng:</td>
+            <td th:text="*{bill?.student?.room?.price}"></td>
+          </tr>
+
+          <tr>
+            <td>Tổng tiền:</td>
+            <td th:text="*{bill?.total}"></td>
+          </tr>
+          
+        </table>
+      </div>
+      
+    </div>
+  </body>
+</html>
