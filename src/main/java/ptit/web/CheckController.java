@@ -41,6 +41,11 @@ public class CheckController {
         this.checkOutRepo = checkOutRepo;
     }
 
+    @GetMapping
+    public String showManagementPage(){
+        return "check.html";
+    }
+
     public int CheckIfCheckMoreThan2Times(int motorbikeid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd");
         List<CheckIn> list = (List<CheckIn>) checkinRepo.findCheckInToday(sdf.format(new Date()), motorbikeid);
@@ -79,13 +84,6 @@ public class CheckController {
             rs = false;
         }
         return rs;
-    }
-
-    @GetMapping
-    public String showRoomMgmt(Model model) {
-        // model.addAttribute("taco", new Taco());
-        model.addAttribute("page", "Quản lý gửi xe");
-        return "check";
     }
 
     @GetMapping("/checkIn")
@@ -139,24 +137,25 @@ public class CheckController {
     }
 
     @PostMapping("/findCheckOut")
-    public String findCheckedOutMotorbike(ServletRequest request, Model model, String licensePlates) {
-        try {
+    public String findCheckedOutMotorbike(ServletRequest request, Model model, String licensePlates){
+        try{
             List<CheckIn> listCheckedIn = (List<CheckIn>) checkinRepo.findAll();
             List<CheckIn> listCheckInContainsLP = new ArrayList<CheckIn>();
-            for (CheckIn checkIn : listCheckedIn) {
+            for(CheckIn checkIn :listCheckedIn){
                 Motorbike moto = motoRepo.findById(checkIn.getMotorbike().getId()).get();
                 checkIn.setMotorbike(moto);
-                if (moto.getLicensePlates().contains(licensePlates)) {
+                if(moto.getLicensePlates().contains(licensePlates)){
                     listCheckInContainsLP.add(checkIn);
                 }
-
+                
             }
             System.out.println(listCheckInContainsLP.size());
 
             List<CheckIn> listCheckInCanCheckOut = canCheckOut(listCheckInContainsLP);
             model.addAttribute("listCheckedIn", listCheckInCanCheckOut);
             model.addAttribute("checkedIn", new CheckIn());
-        } catch (Exception e) {
+        }
+        catch(Exception e){
             return "redirect:/check/findCheckOut?error";
         }
         return "findCheckOut";
