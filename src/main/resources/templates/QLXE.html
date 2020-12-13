@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<div th:insert="/head::head"> </div>
+
+<body>
+
+
+  <div th:insert="/navbar::navbar"> </div>
+
+  <div class="studentManagement">
+    <div class="">
+      <a th:href="@{/motorbike/addMotorbike}" class="btn">Thêm xe</a>
+    </div>
+    <div class="">
+      <a th:href="@{/motorbike/findMotorbike}" class="btn">Tìm xe</a>
+    </div>
+    <!-- <div>
+          <a href="findStudent.html" class="btn">Tìm kiếm tt vé xe</a>
+        </div> -->
+  </div>
+</body>
+
+</html>

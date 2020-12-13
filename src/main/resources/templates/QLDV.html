@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    <div th:insert="/navbar::navbar">  </div>
+
+    <div class="studentManagement">
+        <div class="">
+          <a th:href="@{/service/addService}" class="btn">Thêm dịch vụ</a>
+        </div>
+        <div class="">
+          <a th:href="@{/service/serviceFound}" class="btn">Sửa/Xóa dịch vụ</a>
+        </div>
+        <div>
+          <a th:href="@{/service/serviceFound2}" class="btn">SV sử dụng dịch vụ</a>
+        </div>
+    </div>
+  </body>
+</html>

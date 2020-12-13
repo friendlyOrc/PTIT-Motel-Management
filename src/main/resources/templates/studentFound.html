@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<div th:insert="/head::head"> </div>
+
+<body>
+
+
+  <div th:insert="/navbar::navbar"> </div>
+
+  <div class="container stuFo">
+    <form class=" inputStudentName" th:action="@{/student/studentFound}" method="post">
+      <h1 class="addSV">Tìm sinh viên</h1>
+      <table>
+        <tr>
+          <td>
+            <p>Nhập tên SV: </p>
+          </td>
+          <td><input type="text" name="studentName" th:value="${studentName}" placeholder="Nhập tên SV cần tìm"></td>
+        </tr>
+      </table>
+      <input type="submit" name="findStudent" value="Tìm">
+    </form>
+
+    <form class="stuFoundForm" action="index.html" th:object="${studentt}" method="post">
+      <table id="stuFound">
+        <tr>
+          <th>ID</th>
+          <th>Tên</th>
+          <th>Mã SV</th>
+          <th>Ngày sinh</th>
+          <th>Lớp</th>
+          <th>Quê quán</th>
+          <th>Phòng đang ở</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+        <tr th:each="student: ${students}">
+          <td th:field="${student.id}" th:text="${student.id}"></td>
+          <td th:field="${student.studentName}" th:text="${student.studentName}"></td>
+          <td th:field="${student.studentID}" th:text="${student.studentID}"></td>
+          <td th:field="${student.DOB}" th:text="${student.DOB}"></td>
+          <td th:field="${student.classroom}" th:text="${student.classroom}"></td>
+          <td th:field="${student.studentAddress}" th:text="${student.studentAddress}"></td>
+          <td th:field="${student.room.roomNumber}" th:text="${student.room.roomNumber}"></td>
+          <td><a th:href="@{/student/editStudent(id=${student.id})}">Sửa</a></td>
+          <td><a th:href="@{/student/deleteStudent(id=${student.id})}">Xóa</a></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</body>
+
+</html>

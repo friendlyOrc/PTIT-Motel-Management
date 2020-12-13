@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<div th:insert="/head::head"> </div>
+
+<body>
+
+  <div th:insert="/navbar::navbar"> </div>
+
+  <div class="container stuFo">
+    <form class="stuFoundForm" action="index.html" method="post">
+      <h1 class = "addSV">Danh sách sinh viên sử dụng dịch vụ</h1>
+      <p>Tên dịch vụ: <span th:text="${service.name}"></span></p>
+      <table id="stuFound">
+        <tr>
+          <th>ID</th>
+          <th>Mã SV</th>
+          <th>Tên</th>
+          <th>Số lượng</th>
+          <th>Ngày sử dụng</th>
+          <th>Thao tác</th>
+        </tr>
+        <div th:each="stsv: ${ss}">
+          <tr>
+            <td th:text="${stsv.student.id}"></td>
+            <td th:text="${stsv.student.studentID}"></td>
+            <td th:text="${stsv.student.studentName}"></td>
+            <td th:text="${stsv.quantity}"></td>
+            <td th:text="${stsv.date}"></td>
+            <td><a th:href="@{/service/removeUse(idsv=${stsv.student.id}, iddv=${stsv.service.id})}">Xóa</a></th>
+          </tr>
+        </div>
+      </table>
+      <a href="/service"><input type="button" name="goBack" value="Về trang chủ"></a>
+    </form>
+  </div>
+</body>
+
+</html>

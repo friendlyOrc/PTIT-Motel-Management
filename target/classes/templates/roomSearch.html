@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    
+  <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container stuFo">
+      <form class=" inputStudentName" th:object=${search} method="post">
+        <h1 class = "addSV">Tìm phòng</h1>
+        <table>
+          <tr>
+            <td colspan="2">
+              <p th:text="${msg}"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Nhập khoảng giá tiền: </p></td>
+            <td><input type="number" name="roomPriceFinding" th:field="*{price}" placeholder="Nhập khoảng giá tiền phòng"></td>
+          </tr>
+        </table>
+        <input type="submit" name="findRoom" value="Tìm">
+      </form>
+
+      <form class="stuFoundForm" action="index.html" method="post">
+        <table id="stuFound">
+          <tr>
+          <th>ID</th>
+          <th>Số phòng</th>
+          <th>Loại phòng</th>
+          <th>Đơn giá</th>
+          <th>Số người tối đa</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+          <div th:each="room: ${rooms}">
+            <tr>
+              <td th:text="${room.id}"></td>
+              <td th:text="${room.roomNumber}"></td>
+              <td th:text="${room.type}"></td>
+              <td th:text="${room.price}"></td>
+              <td th:text="${room.amountPeople}"></td>
+              <th><a th:href="@{/room/roomEdit(id=${room.id})}">Sửa</a></th>
+              <th><a th:href="@{/room/delete(id=${room.id})}">Xóa</a></th>
+            </tr>
+          </div>
+          
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

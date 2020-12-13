@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<div th:insert="/head::head"> </div>
+
+<body>
+
+
+  <div th:insert="/navbar::navbar"> </div>
+
+  <div class="container stuFo">
+    <form class=" inputStudentName" th:action="@{/ticket/findMonthlyTicket}" method="post">
+      <h1 class="addSV">Tìm vé xe tháng</h1>
+      <table>
+        <tr>
+          <td>
+            <p>Nhập tên SV: </p>
+          </td>
+          <td><input type="text" name="licensePlates" th:value="${licensePlates}" placeholder="Nhập biển số xe cần tìm">
+          </td>
+        </tr>
+      </table>
+      <input type="submit" name="findStudent" value="Tìm">
+    </form>
+
+    <form class="stuFoundForm" action="index.html" method="post">
+      <table id="stuFound">
+        <tr>
+          <th>ID</th>
+          <th>Tên sinh viên</th>
+          <th>Mã SV</th>
+          <th>Tháng</th>
+          <th>Biển số xe</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+        <tr th:each="ticDisplay: ${ticsDisplay}">
+          <td th:field="${ticDisplay.id}" th:text="${ticDisplay.id}"></td>
+          <td th:field="${ticDisplay.student.studentName}" th:text="${ticDisplay.student.studentName}"></td>
+          <td th:field="${ticDisplay.student.studentID}" th:text="${ticDisplay.student.studentID}"></td>
+          <td th:field="${ticDisplay.month}" th:text="${ticDisplay.month}"></td>
+          <td th:field="${ticDisplay.motorbike.licensePlates}" th:text="${ticDisplay.motorbike.licensePlates}"></td>
+          <td><a th:href="@{/ticket/editMonthlyTicket(id=${ticDisplay.id})}">Sửa</a></td>
+          <td><a th:href="@{/ticket/deleteMonthlyTicket(id=${ticDisplay.id})}">Xóa</a></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</body>
+
+</html>

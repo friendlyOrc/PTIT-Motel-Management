@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container stuFo">
+      <form class=" inputStudentName" th:object=${search} method="post">
+        <h1 class = "addSV">Tìm dịch vụ</h1>
+        <table>
+          <tr>
+            <td colspan="2">
+              <p th:text="${msg}"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Nhập tên dịch vụ: </p></td>
+            <td><input type="text" name="serviceNameFinding" th:field="*{name}" value="" placeholder="Nhập tên dịch vụ"></td>
+          </tr>
+        </table>
+        <input type="submit" name="findService" value="Tìm">
+      </form>
+
+      <form class="stuFoundForm" action="index.html" method="post">
+        <table id="stuFound">
+          <tr>
+            <th>ID</th>
+            <th>Tên dịch vụ</th>
+            <th>Đơn giá</th>
+            <th th:hidden="${hidden1}" >Sửa</th>
+            <th th:hidden="${hidden1}" >Xóa</th>
+            <th th:hidden="${hidden2}" >SV sử dụng dv</th>
+          </tr>
+          <div th:each="service: ${services}">
+            <tr>
+              <td th:text="${service.id}"></td>
+              <td th:text="${service.name}"></td>
+              <td th:text="${service.price}"></td>
+              <td th:hidden="${hidden1}" ><a th:href="@{/service/serviceEdit(id=${service.id})}">Sửa</a></th>
+              <td th:hidden="${hidden1}" ><a th:href="@{/service/delete(id=${service.id})}">Xóa</a></th>
+              <td th:hidden="${hidden2}" ><a th:href="@{/service/studentuseservice(id=${service.id})}">SV sử dụng dv</a></th>
+            </tr>
+          </div>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

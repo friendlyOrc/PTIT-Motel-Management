@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head">  </div>
+  <body>
+
+    
+  <div th:insert="/navbar::navbar">  </div>
+
+    <div class="container">
+      <form class="loginForm" method="post">
+        <h1 class="addSV">Sửa thông tin phòng</h1>
+        <table th:object=${service}>
+          <tr>
+            <td><p>ID: </p></td>
+            <td><input type="text" name="stuIDCard" th:field="*{id}" th:value="${service.id}" readonly></td>
+          </tr>
+          <tr>
+            <td><p>Tên dịch vụ: </p></td>
+            <td><input type="text" name="stuIDCard" th:field="*{name}" th:value="${service.name}" required></td>
+          </tr>
+          <tr>
+            <td><p>Đơn giá: </p></td>
+            <td><input type="text" name="stuName" th:field="*{price}" th:value="${service.price}" required></td>
+          </tr>
+        </table>
+        <input type="submit" value="Cập nhật">
+        <input type="reset" name="reset" value="Xóa tất cả">
+        <a th:href="@{/room/roomSearch}"><input type="button" name="goBack" value="Quay lại"></a>
+      </form>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <div th:insert="/head::head"> </div>
+  <body>
+
+    
+  <div th:insert="/navbar::navbar"> </div>
+
+    <div class="container">
+      <form class="loginForm" th:action="@{/motorbike/editMotorbike}" method="post" >
+        <h1 class="addSV">Sửa thông tin Xe</h1>
+        <table th:object="${student}">
+          <tr>
+            <td><p>ID xe: </p></td>
+            <td><input type="text" th:value="${motorbike.id}" name="id" readonly></td>
+          </tr>
+          <tr>
+            <td><p>Loại xe: </p></td>
+            <td><input type="text" th:value="${motorbike.motorbikeName}" name="motorbikeName"></td>
+          </tr>
+          <tr>
+            <td><p>Giá trị: </p></td>
+            <td><input type="text" th:value="${motorbike.price}" name="price"></td>
+          </tr>
+          <tr>
+            <td><p>Biển số: </p></td>
+            <td><input type="text" th:value="${motorbike.licensePlates}" name="licensePlates"></td>
+          </tr>
+          <tr>
+            <td><p>Chủ xe: </p></td>
+            <td>
+            <select name="studentid">
+              <option th:each="student: ${students}" th:value="${student.id}" th:text="${student.studentName}"></option>
+            </select></td>
+          </tr>
+        </table>
+        <input type="submit" name="updateStudent" value="Cập nhật">
+        <input type="reset" name="reset" value="Xóa tất cả">
+        <a th:href="@{/motorbike/findMotorbike}"><input type="button" name="goBack" value="Quay lại"></a>
+      </form>
+    </div>
+
+  </body>
+</html>
